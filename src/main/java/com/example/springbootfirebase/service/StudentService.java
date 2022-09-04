@@ -1,21 +1,22 @@
 package com.example.springbootfirebase.service;
 
-import com.example.springbootfirebase.domain.Student;
+import com.example.springbootfirebase.dto.StudentRequest;
+import com.example.springbootfirebase.dto.StudentResponse;
 
 import java.util.List;
 
 public interface StudentService {
 
-    List<Student> getAllStudent();
+    List<StudentResponse> getAllStudent();
 
-    Student saveStudent(Student student);
+    StudentResponse saveStudent(StudentRequest student);
 
-    Student getStudentById(String id);
+    StudentResponse getStudentById(String id);
 
-    Student updateStudent(Student student);
+    StudentResponse updateStudent(StudentRequest student);
 
     String deleteStudent(String id);
 
-    List<Student> getStudentStatusActive();
+    List<StudentResponse> getStudentStatusActive();
 
 }

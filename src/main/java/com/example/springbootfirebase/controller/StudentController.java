@@ -1,6 +1,7 @@
 package com.example.springbootfirebase.controller;
 
-import com.example.springbootfirebase.domain.Student;
+import com.example.springbootfirebase.dto.StudentRequest;
+import com.example.springbootfirebase.dto.StudentResponse;
 import com.example.springbootfirebase.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,8 +22,8 @@ public class StudentController {
 
     @GetMapping(value = "/students")
     @ResponseBody
-    public ResponseEntity<List<Student>> getAllStudents() {
-        List<Student> response = studentService.getAllStudent();
+    public ResponseEntity<List<StudentResponse>> getAllStudents() {
+        List<StudentResponse> response = studentService.getAllStudent();
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
@@ -30,8 +31,8 @@ public class StudentController {
 
     @PostMapping(value = "/student")
     @ResponseBody
-    public ResponseEntity<Student> saveStudent(@RequestBody Student student) {
-        Student response = studentService.saveStudent(student);
+    public ResponseEntity<StudentResponse> saveStudent(@RequestBody StudentRequest student) {
+        StudentResponse response = studentService.saveStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
@@ -39,8 +40,8 @@ public class StudentController {
 
     @GetMapping(value = "/student")
     @ResponseBody
-    public ResponseEntity<Student> getStudentByNIM(@RequestParam String id) {
-        Student response = studentService.getStudentById(id);
+    public ResponseEntity<StudentResponse> getStudentById(@RequestParam String id) {
+        StudentResponse response = studentService.getStudentById(id);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
@@ -48,8 +49,8 @@ public class StudentController {
 
     @PutMapping(value = "/student")
     @ResponseBody
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
-        Student response = studentService.updateStudent(student);
+    public ResponseEntity<StudentResponse> updateStudent(@RequestBody StudentRequest student) {
+        StudentResponse response = studentService.updateStudent(student);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
@@ -65,8 +66,8 @@ public class StudentController {
 
     @GetMapping(value = "/student/active")
     @ResponseBody
-    public ResponseEntity<List<Student>> getAllActiveStudent() {
-        List<Student> response = studentService.getStudentStatusActive();
+    public ResponseEntity<List<StudentResponse>> getAllActiveStudent() {
+        List<StudentResponse> response = studentService.getStudentStatusActive();
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);

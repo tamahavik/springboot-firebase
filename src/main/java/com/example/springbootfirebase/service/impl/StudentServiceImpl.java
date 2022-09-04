@@ -1,7 +1,10 @@
 package com.example.springbootfirebase.service.impl;
 
 import com.example.springbootfirebase.domain.Student;
+import com.example.springbootfirebase.dto.StudentRequest;
+import com.example.springbootfirebase.dto.StudentResponse;
 import com.example.springbootfirebase.enums.StudentStatus;
+import com.example.springbootfirebase.mapper.StudentMapper;
 import com.example.springbootfirebase.repository.StudentRepository;
 import com.example.springbootfirebase.service.StudentService;
 import org.springframework.stereotype.Service;
@@ -18,24 +21,28 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getAllStudent() {
-        return studentRepository.findAll();
+    public List<StudentResponse> getAllStudent() {
+        List<Student> students = studentRepository.findAll();
+        return StudentMapper.INSTANCE.listStudentToListResponse(students);
     }
 
     @Override
-    public Student saveStudent(Student student) {
-        Student studentWithId = student.generateUUID();
-        return studentRepository.save(studentWithId);
+    public StudentResponse saveStudent(StudentRequest student) {
+        Student studentWithId = StudentMapper.INSTANCE.requestToDomain(student)
+                .generateUUID();
+        Student saved = studentRepository.save(studentWithId);
+        return StudentMapper.INSTANCE.domainToResponse(saved);
     }
 
     @Override
-    public Student getStudentById(String id) {
-        return studentRepository.findById(id)
+    public StudentResponse getStudentById(String id) {
+        Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Data Not Found"));
+        return StudentMapper.INSTANCE.domainToResponse(student);
     }
 
     @Override
-    public Student updateStudent(final Student student) {
+    public StudentResponse updateStudent(StudentRequest student) {
         Student dbStudent = studentRepository.findById(student.getId())
                 .orElseThrow(() -> new RuntimeException("Bad Request"));
 
@@ -47,7 +54,8 @@ public class StudentServiceImpl implements StudentService {
                 .email(student.getEmail())
                 .build();
 
-        return studentRepository.save(updated);
+        Student saved = studentRepository.save(updated);
+        return StudentMapper.INSTANCE.domainToResponse(saved);
     }
 
     @Override
@@ -59,7 +67,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getStudentStatusActive() {
-        return studentRepository.findByField(Student.STATUS, StudentStatus.ACTIVE.name());
+    public List<StudentResponse> getStudentStatusActive() {
+        List<Student> studentsActive = studentRepository.findByField(Student.STATUS, StudentStatus.ACTIVE.name());
+        return StudentMapper.INSTANCE.listStudentToListResponse(studentsActive);
     }
 }
